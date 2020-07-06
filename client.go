@@ -41,8 +41,8 @@ func (c *JdClient) PostQueryJingfenGoods() error {
 
 	// 封装参数
 	timestamp := time.Now().Format("2006-01-02 15:04:05")
-	goodsReq := map[string]string{
-		"goodsReq": string(bizData),
+	goodsReq := map[string]interface{}{
+		"goodsReq": &req,
 	}
 	paramJsonBytes, err := json.Marshal(&goodsReq)
 	if err != nil {

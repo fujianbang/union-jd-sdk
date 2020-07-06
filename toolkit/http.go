@@ -3,6 +3,7 @@ package toolkit
 import (
 	"fmt"
 	"github.com/google/go-querystring/query"
+	"go.uber.org/zap"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -23,6 +24,8 @@ func HttpGet(address string, v interface{}) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	a := req.URL.RequestURI()
+	zap.L().Debug(a)
 
 	c := &http.Client{}
 	resp, err := c.Do(req)
