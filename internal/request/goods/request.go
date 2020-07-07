@@ -1,12 +1,8 @@
-package request
+package goods
 
 import (
 	"encoding/json"
 )
-
-type Request interface {
-	JsonParams() (string, error)
-}
 
 // UnionOpenGoodsJingfenQuery 京粉精选商品查询接口
 type UnionOpenGoodsJingfenQueryRequest struct {
