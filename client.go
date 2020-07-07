@@ -6,7 +6,6 @@ import (
 	"time"
 	"union-jd-sdk/internal"
 	"union-jd-sdk/internal/biz"
-	"union-jd-sdk/internal/biz/goods/jingfen_query/response"
 	"union-jd-sdk/internal/toolkit"
 )
 
@@ -76,7 +75,7 @@ func (c *JdClient) Execute(req biz.Request) error {
 
 	zap.L().Debug("响应结果", zap.String("code", respCode))
 
-	var result response.Result
+	var result biz.Result
 	if err := json.Unmarshal([]byte(respResult), &result); err != nil {
 		zap.L().Error("消息反序列化失败", zap.Error(err))
 		return nil
