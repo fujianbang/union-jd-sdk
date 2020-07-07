@@ -1,6 +1,7 @@
 package union_jd_sdk
 
 import (
+	"encoding/json"
 	"go.uber.org/zap"
 	"time"
 	"union-jd-sdk/internal"
@@ -8,7 +9,7 @@ import (
 	"union-jd-sdk/internal/toolkit"
 )
 
-const SERVER_URL = "https://router.jd.com/api"
+const ServerUrl = "https://router.jd.com/api"
 
 type JdClient struct {
 	accessToken string
@@ -55,12 +56,23 @@ func (c *JdClient) Execute(req request.Request) error {
 	zap.L().Debug("请求参数", zap.Any("data", params))
 
 	// 请求JD Api服务器
-	resp, err := toolkit.HttpGet(SERVER_URL, params)
+	respBytes, err := toolkit.HttpGet(ServerUrl, params)
 	if err != nil {
 		zap.L().Error("http请求失败", zap.Error(err))
 		return err
 	}
 
-	zap.L().Debug("响应结果", zap.ByteString("data", resp))
+	var respObj map[string]interface{}
+	if err := json.Unmarshal(respBytes, &respObj); err != nil {
+		zap.L().Error("JSON反序列化失败", zap.Error(err))
+		return nil
+	}
+
+	responseMessage := respObj[req.ResponseName()].(map[string]interface{})
+
+	code := responseMessage["code"].(string)
+	result := responseMessage["result"].(string)
+
+	zap.L().Debug("响应结果", zap.String("code", code), zap.String("result", result))
 	return nil
 }
