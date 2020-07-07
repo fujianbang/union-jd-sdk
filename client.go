@@ -6,6 +6,7 @@ import (
 	"time"
 	"union-jd-sdk/internal"
 	"union-jd-sdk/internal/biz"
+	"union-jd-sdk/internal/biz/goods/jingfen_query/response"
 	"union-jd-sdk/internal/toolkit"
 )
 
@@ -21,12 +22,12 @@ func NewJdClient(accessToken, appKey, appSecret string) *JdClient {
 	return &JdClient{accessToken: accessToken, appKey: appKey, appSecret: appSecret}
 }
 
-func (c *JdClient) Execute(req biz.Request) error {
+func (c *JdClient) Execute(req biz.Request) (interface{}, error) {
 	// get business params
 	jsonParams, err := req.JsonParams()
 	if err != nil {
 		zap.L().Error("获取JsonParams失败", zap.Error(err))
-		return err
+		return nil, err
 	}
 	zap.L().Debug("业务参数", zap.String("JsonParams", jsonParams))
 
@@ -59,13 +60,13 @@ func (c *JdClient) Execute(req biz.Request) error {
 	respBytes, err := toolkit.HttpGet(ServerUrl, params)
 	if err != nil {
 		zap.L().Error("http请求失败", zap.Error(err))
-		return err
+		return nil, err
 	}
 
 	var respObj map[string]interface{}
 	if err := json.Unmarshal(respBytes, &respObj); err != nil {
 		zap.L().Error("JSON反序列化失败", zap.Error(err))
-		return nil
+		return nil, err
 	}
 
 	responseMessage := respObj[req.ResponseName()].(map[string]interface{})
@@ -75,14 +76,14 @@ func (c *JdClient) Execute(req biz.Request) error {
 
 	zap.L().Debug("响应结果", zap.String("code", respCode))
 
-	var result biz.Result
+	var result response.UnionOpenGoodsJingfenQueryResponse
 	if err := json.Unmarshal([]byte(respResult), &result); err != nil {
 		zap.L().Error("消息反序列化失败", zap.Error(err))
-		return nil
+		return nil, nil
 	}
 
 	zap.L().Debug("响应解析结果", zap.Int32("code", result.Code), zap.String("message", result.Message),
 		zap.String("responseId", result.RequestId), zap.Any("data", result.Data))
 
-	return nil
+	return result, nil
 }
