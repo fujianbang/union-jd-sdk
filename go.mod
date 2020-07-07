@@ -1,4 +1,4 @@
-module union-jd-sdk
+module github.com/fujianbang/union-jd-sdk
 
 go 1.14
 
