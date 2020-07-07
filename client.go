@@ -4,9 +4,7 @@ import (
 	"encoding/json"
 	"go.uber.org/zap"
 	"time"
-	"union-jd-sdk/config"
-	"union-jd-sdk/request"
-	"union-jd-sdk/toolkit"
+	"union-jd-sdk/internal/toolkit"
 )
 
 const SERVER_URL = "https://router.jd.com/api"
@@ -23,7 +21,7 @@ func NewJdClient(accessToken, appKey, appSecret string) *JdClient {
 
 func (c *JdClient) PostQueryJingfenGoods() error {
 	// 请求数据
-	req := &request.UnionOpenGoodsJingfenQueryRequest{
+	req := &UnionOpenGoodsJingfenQueryRequest{
 		EliteId: "1",
 		//PageIndex: "",
 		//PageSize:  "",
@@ -52,16 +50,16 @@ func (c *JdClient) PostQueryJingfenGoods() error {
 	signParams := map[string]string{
 		"app_key":     c.appKey,
 		"format":      "json",
-		"method":      config.MethodQueryJingfenGoods,
+		"method":      MethodQueryJingfenGoods,
 		"param_json":  string(paramJsonBytes),
 		"sign_method": "md5",
 		"timestamp":   timestamp,
 		"v":           "1.0",
 	}
 	signValue := toolkit.Sign(signParams, c.appSecret)
-	params := request.Config{
+	params := Config{
 		Version:     "1.0",
-		Method:      config.MethodQueryJingfenGoods,
+		Method:      MethodQueryJingfenGoods,
 		AccessToken: c.accessToken,
 		AppKey:      c.appKey,
 		SignMethod:  "md5",

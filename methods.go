@@ -1,4 +1,4 @@
-package config
+package union_jd_sdk
 
 const (
 	MethodQueryJingfenGoods            = "jd.union.open.goods.jingfen.query"            // 京粉精选商品查询接口

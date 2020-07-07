@@ -1,4 +1,4 @@
-package request
+package union_jd_sdk
 
 type Config struct {
 	Version     string `url:"v"`
