@@ -5,7 +5,8 @@ import (
 	"go.uber.org/zap"
 	"time"
 	"union-jd-sdk/internal"
-	"union-jd-sdk/internal/request"
+	"union-jd-sdk/internal/biz"
+	"union-jd-sdk/internal/biz/goods/jingfen_query/response"
 	"union-jd-sdk/internal/toolkit"
 )
 
@@ -21,7 +22,7 @@ func NewJdClient(accessToken, appKey, appSecret string) *JdClient {
 	return &JdClient{accessToken: accessToken, appKey: appKey, appSecret: appSecret}
 }
 
-func (c *JdClient) Execute(req request.Request) error {
+func (c *JdClient) Execute(req biz.Request) error {
 	// get business params
 	jsonParams, err := req.JsonParams()
 	if err != nil {
@@ -70,9 +71,19 @@ func (c *JdClient) Execute(req request.Request) error {
 
 	responseMessage := respObj[req.ResponseName()].(map[string]interface{})
 
-	code := responseMessage["code"].(string)
-	result := responseMessage["result"].(string)
+	respCode := responseMessage["code"].(string)
+	respResult := responseMessage["result"].(string)
 
-	zap.L().Debug("响应结果", zap.String("code", code), zap.String("result", result))
+	zap.L().Debug("响应结果", zap.String("code", respCode))
+
+	var result response.Result
+	if err := json.Unmarshal([]byte(respResult), &result); err != nil {
+		zap.L().Error("消息反序列化失败", zap.Error(err))
+		return nil
+	}
+
+	zap.L().Debug("响应解析结果", zap.Int32("code", result.Code), zap.String("message", result.Message),
+		zap.String("responseId", result.RequestId), zap.Any("data", result.Data))
+
 	return nil
 }
