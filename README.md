@@ -4,8 +4,8 @@
 
 ## APIs
 
-| 功能 | API列表 ｜
-| --- | --- |
+| 功能 | API列表 |
+| :--- | :--- |
 | 京粉精选商品查询接口 | jd.union.open.goods.jingfen.query |
 | 订单查询接口 | jd.union.open.order.query |
 | 关键词商品查询接口【申请】| jd.union.open.goods.query |
