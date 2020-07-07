@@ -1,9 +1,10 @@
 package union_jd_sdk
 
 import (
-	"encoding/json"
 	"go.uber.org/zap"
 	"time"
+	"union-jd-sdk/internal"
+	"union-jd-sdk/internal/request"
 	"union-jd-sdk/internal/toolkit"
 )
 
@@ -19,45 +20,28 @@ func NewJdClient(accessToken, appKey, appSecret string) *JdClient {
 	return &JdClient{accessToken: accessToken, appKey: appKey, appSecret: appSecret}
 }
 
-func (c *JdClient) PostQueryJingfenGoods() error {
-	// 请求数据
-	req := &UnionOpenGoodsJingfenQueryRequest{
-		EliteId: "1",
-		//PageIndex: "",
-		//PageSize:  "",
-		//SortName:  "",
-		//Sort:      "",
-		//Pid:       "",
-		//Fields:    "",
-	}
-	bizData, err := json.Marshal(&req)
+func (c *JdClient) Execute(req request.Request) error {
+	// get business params
+	jsonParams, err := req.JsonParams()
 	if err != nil {
-		zap.L().Error("JSON序列化失败", zap.Error(err))
+		zap.L().Error("获取JsonParams失败", zap.Error(err))
 		return err
 	}
-	zap.L().Debug("请求数据", zap.String("data", string(bizData)))
+	zap.L().Debug("业务参数", zap.String("JsonParams", jsonParams))
 
-	// 封装参数
+	// sign
 	timestamp := time.Now().Format("2006-01-02 15:04:05")
-	goodsReq := map[string]interface{}{
-		"goodsReq": &req,
-	}
-	paramJsonBytes, err := json.Marshal(&goodsReq)
-	if err != nil {
-		return err
-	}
-	// 签名
 	signParams := map[string]string{
 		"app_key":     c.appKey,
 		"format":      "json",
 		"method":      MethodQueryJingfenGoods,
-		"param_json":  string(paramJsonBytes),
+		"param_json":  jsonParams,
 		"sign_method": "md5",
 		"timestamp":   timestamp,
 		"v":           "1.0",
 	}
 	signValue := toolkit.Sign(signParams, c.appSecret)
-	params := Config{
+	params := internal.Config{
 		Version:     "1.0",
 		Method:      MethodQueryJingfenGoods,
 		AccessToken: c.accessToken,
@@ -66,10 +50,11 @@ func (c *JdClient) PostQueryJingfenGoods() error {
 		Format:      "json",
 		Timestamp:   timestamp,
 		Sign:        signValue,
-		ParamJson:   string(paramJsonBytes),
+		ParamJson:   jsonParams,
 	}
 	zap.L().Debug("请求参数", zap.Any("data", params))
 
+	// 请求JD Api服务器
 	resp, err := toolkit.HttpGet(SERVER_URL, params)
 	if err != nil {
 		zap.L().Error("http请求失败", zap.Error(err))
