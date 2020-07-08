@@ -2,9 +2,9 @@ package union_jd_sdk
 
 import (
 	"encoding/json"
+	"github.com/fujianbang/union-jd-sdk/biz"
+	"github.com/fujianbang/union-jd-sdk/biz/goods/jingfen_query/response"
 	"github.com/fujianbang/union-jd-sdk/internal"
-	"github.com/fujianbang/union-jd-sdk/internal/biz"
-	"github.com/fujianbang/union-jd-sdk/internal/biz/goods/jingfen_query/response"
 	"github.com/fujianbang/union-jd-sdk/internal/toolkit"
 	"go.uber.org/zap"
 	"time"
@@ -85,5 +85,5 @@ func (c *JdClient) Execute(req biz.Request) (interface{}, error) {
 	zap.L().Debug("响应解析结果", zap.Int32("code", result.Code), zap.String("message", result.Message),
 		zap.String("responseId", result.RequestId), zap.Any("data", result.Data))
 
-	return result, nil
+	return &result, nil
 }
