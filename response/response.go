@@ -27,7 +27,7 @@ type JFGoodsResp struct {
 	BrandCode             string          `json:"brandCode"`             // 品牌code
 	BrandName             string          `json:"brandName"`             // 品牌名
 	Owner                 string          `json:"owner"`                 // g=自营，p=pop
-	PinGouInfo            *PinGouInfo     `json:"pingouInfo"`            // 拼购信息
+	PinGouInfo            *PinGouInfo     `json:"pinGouInfo"`            // 拼购信息
 	ResourceInfo          *ResourceInfo   `json:"resourceInfo"`          // 资源信息
 	InOrderCount30DaysSku int64           `json:"inOrderCount30DaysSku"` // 30天引单数量(sku维度)
 	SeckillInfo           *SeckillInfo    `json:"seckillInfo"`           // 秒杀信息(可选）
