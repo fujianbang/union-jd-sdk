@@ -1,4 +1,4 @@
-package biz
+package internal
 
 type Request interface {
 	JsonParams() (string, error)

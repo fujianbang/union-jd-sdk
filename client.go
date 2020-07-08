@@ -2,10 +2,9 @@ package union_jd_sdk
 
 import (
 	"encoding/json"
-	"github.com/fujianbang/union-jd-sdk/biz"
-	"github.com/fujianbang/union-jd-sdk/biz/goods/jingfen_query/response"
 	"github.com/fujianbang/union-jd-sdk/internal"
 	"github.com/fujianbang/union-jd-sdk/internal/toolkit"
+	"github.com/fujianbang/union-jd-sdk/response"
 	"go.uber.org/zap"
 	"time"
 )
@@ -22,7 +21,7 @@ func NewJdClient(accessToken, appKey, appSecret string) *JdClient {
 	return &JdClient{accessToken: accessToken, appKey: appKey, appSecret: appSecret}
 }
 
-func (c *JdClient) Execute(req biz.Request) (interface{}, error) {
+func (c *JdClient) Execute(req internal.Request) (interface{}, error) {
 	// get business params
 	jsonParams, err := req.JsonParams()
 	if err != nil {
