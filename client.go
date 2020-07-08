@@ -2,12 +2,12 @@ package union_jd_sdk
 
 import (
 	"encoding/json"
+	"github.com/fujianbang/union-jd-sdk/internal"
+	"github.com/fujianbang/union-jd-sdk/internal/biz"
+	"github.com/fujianbang/union-jd-sdk/internal/biz/goods/jingfen_query/response"
+	"github.com/fujianbang/union-jd-sdk/internal/toolkit"
 	"go.uber.org/zap"
 	"time"
-	"union-jd-sdk/internal"
-	"union-jd-sdk/internal/biz"
-	"union-jd-sdk/internal/biz/goods/jingfen_query/response"
-	"union-jd-sdk/internal/toolkit"
 )
 
 const ServerUrl = "https://router.jd.com/api"
