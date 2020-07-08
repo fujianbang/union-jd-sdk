@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/fujianbang/union-jd-sdk/internal"
 	"github.com/fujianbang/union-jd-sdk/internal/toolkit"
-	"github.com/fujianbang/union-jd-sdk/response"
 	"go.uber.org/zap"
 	"time"
 )
@@ -21,7 +20,7 @@ func NewJdClient(accessToken, appKey, appSecret string) *JdClient {
 	return &JdClient{accessToken: accessToken, appKey: appKey, appSecret: appSecret}
 }
 
-func (c *JdClient) Execute(req internal.Request) (interface{}, error) {
+func (c *JdClient) Execute(req internal.Request) ([]byte, error) {
 	// get business params
 	jsonParams, err := req.JsonParams()
 	if err != nil {
@@ -75,14 +74,5 @@ func (c *JdClient) Execute(req internal.Request) (interface{}, error) {
 
 	zap.L().Debug("响应结果", zap.String("code", respCode))
 
-	var result response.UnionOpenGoodsJingfenQueryResponse
-	if err := json.Unmarshal([]byte(respResult), &result); err != nil {
-		zap.L().Error("消息反序列化失败", zap.Error(err))
-		return nil, nil
-	}
-
-	zap.L().Debug("响应解析结果", zap.Int32("code", result.Code), zap.String("message", result.Message),
-		zap.String("responseId", result.RequestId), zap.Any("data", result.Data))
-
-	return &result, nil
+	return []byte(respResult), nil
 }
