@@ -10,8 +10,6 @@ import (
 )
 
 //const url = "https://union.jd.com/api/apiDoc/apiSignParam"
-// 0aa97446a384a7f4fc97296fca506d59
-// 12ad4702be644255b1f7d1d5f71f6208
 func HttpGet(address string, v interface{}) ([]byte, error) {
 	urlVal, err := url.Parse(address)
 	if err != nil {
