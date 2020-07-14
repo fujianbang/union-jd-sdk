@@ -43,7 +43,7 @@ type CategoryInfo struct {
 	Cid2     int64  `json:"cid2"`     // 二级类目ID
 	Cid2Name string `json:"cid2Name"` // 二级类目名称
 	Cid3     int64  `json:"cid3"`     // 三级类目ID
-	Cid4Name string `json:"cid4Name"` // 三级类目名称
+	Cid4Name string `json:"cid3Name"` // 三级类目名称
 }
 
 // 佣金信息
