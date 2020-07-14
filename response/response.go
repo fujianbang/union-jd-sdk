@@ -89,7 +89,7 @@ type PriceInfo struct {
 	Price             float64 `json:"price"`             // 无线价格
 	LowestPrice       float64 `json:"lowestPrice"`       // 最低价格(可选)
 	LowestPriceType   uint8   `json:"lowestPriceType"`   // 最低价格类型，1：无线价格；2：拼购价格； 3：秒杀价格
-	LowestCouponPrice float64 `json:"lowestCouponPrice"` // 最低价后的优惠券价最低价后的优惠券价(当商品无最优券时，不返回该字段)
+	LowestCouponPrice float64 `json:"lowestCouponPrice"` // 最低价后的优惠券价(当商品无最优券时，不返回该字段)
 }
 
 // 店铺信息
