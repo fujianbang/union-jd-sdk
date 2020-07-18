@@ -12,6 +12,7 @@ import (
 var httpClient = &http.Client{}
 
 //const url = "https://union.jd.com/api/apiDoc/apiSignParam"
+
 func HttpGet(address string, v interface{}) ([]byte, error) {
 	urlVal, err := url.Parse(address)
 	if err != nil {
